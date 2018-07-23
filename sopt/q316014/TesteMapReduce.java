@@ -2,6 +2,7 @@
  * Pergunta referente: https://pt.stackoverflow.com/q/316014/132
  */
 import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -63,6 +64,9 @@ public class TesteMapReduce {
 
         System.out.println("\nmapCollectParalelo:");
         System.out.println(mapCollectParalelo(Colorido.funcoes(), new Colorido()));
+
+        System.out.println("\nmapCollectParaleloMaisSimples:");
+        System.out.println(mapCollectParaleloMaisSimples(Colorido.funcoes(), new Colorido()));
     }
 
     public static <T> List<String> mapReduceSequencial(
@@ -138,6 +142,17 @@ public class TesteMapReduce {
                 .parallelStream()
                 .map(f -> f.apply(objetoSobProcessamento))
                 .collect(ArrayList::new, List::add, List::addAll);
+        return Collections.unmodifiableList(retornoProcessamento);
+    }
+
+    public static <T> List<String> mapCollectParaleloMaisSimples(
+        List<Function<T, String>> funcoes, // inicializa com as diversas funções
+        T objetoSobProcessamento) // parâmetro arbitrário
+    {
+        List<String> retornoProcessamento = funcoes
+                .parallelStream()
+                .map(f -> f.apply(objetoSobProcessamento))
+                .collect(Collectors.toList());
         return Collections.unmodifiableList(retornoProcessamento);
     }
 }
