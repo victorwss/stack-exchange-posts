@@ -111,10 +111,10 @@ public class TesteMapReduce {
                     novaLista.add(novoValor);
                     return novaLista;
                 }, (l1, l2) -> {
-                    List<String> novaLista = new ArrayList<>(l1.size() + l2.size());
-                    novaLista.addAll(l1);
-                    novaLista.addAll(l2);
-                    return novaLista;
+                    if (l1.isEmpty()) return l2;
+                    if (l2.isEmpty()) return l1;
+                    l1.addAll(l2);
+                    return l1;
                 });
         return Collections.unmodifiableList(retornoProcessamento);
     }
